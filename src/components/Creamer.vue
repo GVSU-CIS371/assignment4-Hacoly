@@ -1,10 +1,33 @@
 <template>
   <div class="froth">
-    <div v-for=" in 5" class="foam"></div>
+    <div
+      v-for="n in 5"
+      :key="n"
+      class="foam"
+      :style="{ backgroundColor: foamColor }"
+    ></div>
   </div>
 </template>
 
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import { computed } from "vue";
+import { useBeverageStore } from "../stores/beverageStore";
+
+const beverageStore = useBeverageStore();
+
+const foamColor = computed(() => {
+  if (beverageStore.currentCreamer.name === "Milk") {
+    return "#f8f8f2";
+  }
+  if (beverageStore.currentCreamer.name === "Cream") {
+    return "#F5F5DC";
+  }
+  if (beverageStore.currentCreamer.name === "Half & Half") {
+    return "#FFFACD";
+  }
+  return "transparent";
+});
+</script>
 <style lang="scss" scoped>
 .froth {
   overflow: visible;
@@ -12,12 +35,12 @@
   position: relative;
   height: 20%;
   width: 100%;
-  background-color: #c6c6c6;
   animation: pour-tea 2s 2s forwards;
+  background-color: transparent;
 }
+
 .foam {
   display: block;
-  background: #e4e0d2;
   border-radius: 30px;
   height: 40px;
   width: 40px;
